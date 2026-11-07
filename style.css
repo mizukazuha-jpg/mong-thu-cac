@@ -16,3 +16,5 @@
 .prose-figure figcaption{font-size:.72em;color:var(--muted);font-style:italic;margin-top:9px}
 .prose p{white-space:pre-wrap}
 @media(max-width:650px){.block-actions button{flex:1}.content-block{padding:11px}.prose-figure{margin:20px auto}}
+
+.continue-panel{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 18px;margin:24px 0 4px;border:1px solid var(--line);border-radius:7px;background:var(--surface)}.continue-panel strong,.continue-panel small{display:block}.continue-panel small{margin-top:5px}.batch-image-input{display:none!important}.batch-status{margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:6px;background:var(--soft)}.batch-status-head{display:flex;justify-content:space-between;gap:12px;font-size:12px}.batch-status progress{display:block;width:100%;height:10px;margin:10px 0}.batch-status small{color:var(--muted);font-size:11px;line-height:1.5}@media(max-width:520px){.continue-panel{align-items:flex-start;flex-direction:column}.continue-panel button{width:100%}}

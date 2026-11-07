@@ -63,3 +63,9 @@ Không dùng bản không mật khẩu cho nội dung cần bảo vệ. Nếu sa
 
 ## Nội dung chương kết hợp chữ và ảnh
 Trong trang quản trị, mỗi chương có thể gồm nhiều khối nội dung. Dùng **＋ Thêm đoạn chữ** và **＋ Chèn ảnh** để sắp xếp văn bản và ảnh xen kẽ theo thứ tự. Ảnh PNG/JPG/WEBP/GIF tối đa 4MB mỗi ảnh; có thể thêm chú thích. Các chương cũ chỉ có `content` vẫn được hiển thị bình thường.
+
+
+## Tính năng bổ sung (bản nâng cấp)
+- Độc giả có thể bấm **Đọc tiếp** ở thư viện để quay lại truyện, chương và vị trí cuộn đã đọc gần nhất. Tiến độ lưu trong localStorage của trình duyệt/thiết bị hiện tại.
+- Trong mỗi chương ở trang quản trị, nút **Tải nhiều ảnh** cho phép chọn hàng loạt ảnh (ví dụ 60 ảnh) và tải tự động lần lượt. Có thanh tiến trình và danh sách tệp lỗi.
+- Mỗi ảnh vẫn phải là PNG/JPG/WEBP/GIF và tối đa 4MB; ảnh được lưu vào Netlify Blobs như trước.

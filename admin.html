@@ -8,7 +8,7 @@
 <label class="formfield full">Tóm tắt<textarea name="description" maxlength="500"></textarea></label>
 <label class="formfield">Ảnh bìa (PNG/JPG/WEBP/GIF, tối đa 4MB)<input id="coverFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label><div class="formfield"><span>Xem trước ảnh bìa</span><img id="coverPreview" class="cover-preview" alt="Chưa có ảnh bìa"></div>
 </div><div class="actions"><button class="primary" type="submit">Lưu truyện</button><button class="secondary" type="button" id="resetForm">Xóa nội dung form</button></div></form></section>
-<section class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2>Chương truyện</h2><button class="secondary" id="addChapter">＋ Thêm chương</button></div><div id="chapters"></div></section>
+<section class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2>Chương truyện</h2><button class="secondary" id="addChapter">＋ Thêm chương</button></div><div id="chapters"></div><div id="batchUploadStatus" class="batch-status hidden"><div class="batch-status-head"><strong id="batchUploadText">Đang tải ảnh...</strong><span id="batchUploadCount">0/0</span></div><progress id="batchUploadProgress" max="100" value="0"></progress><small id="batchUploadErrors"></small></div></section>
 <section class="panel"><h2>Danh sách truyện</h2><div id="storyList"></div></section>
 <section class="panel"><h2>Quản lý bình luận</h2><p class="muted">Xóa bình luận không phù hợp. Bình luận được hiển thị công khai ngay sau khi gửi.</p><div id="commentAdmin"></div></section>
 </main><script src="admin.js"></script></body></html>

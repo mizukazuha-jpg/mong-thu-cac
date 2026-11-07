@@ -69,3 +69,6 @@ Trong trang quản trị, mỗi chương có thể gồm nhiều khối nội du
 - Độc giả có thể bấm **Đọc tiếp** ở thư viện để quay lại truyện, chương và vị trí cuộn đã đọc gần nhất. Tiến độ lưu trong localStorage của trình duyệt/thiết bị hiện tại.
 - Trong mỗi chương ở trang quản trị, nút **Tải nhiều ảnh** cho phép chọn hàng loạt ảnh (ví dụ 60 ảnh) và tải tự động lần lượt. Có thanh tiến trình và danh sách tệp lỗi.
 - Mỗi ảnh vẫn phải là PNG/JPG/WEBP/GIF và tối đa 4MB; ảnh được lưu vào Netlify Blobs như trước.
+
+
+- Phiên bản v5: các ảnh minh họa đặt liên tiếp trong chương sẽ sát liền nhau, không còn khoảng trống; ảnh không bị bo góc và không bị giới hạn chiều cao.

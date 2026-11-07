@@ -5,6 +5,19 @@ const SEED = [{"id": "duoi-trang-nguyet", "title": "Dưới Ánh Trăng", "subti
 function esc(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function render(){let q=$("#search").value.toLowerCase(),g=$("#genre").value;let arr=stories.filter(s=>(tab==="all"||s.status===tab)&&(!g||g==="all"||s.genre.includes(g))&&[s.title,s.author,s.description,...s.genre].join(" ").toLowerCase().includes(q));arr.sort((a,b)=>$("#sort").value==="az"?a.title.localeCompare(b.title,"vi"):String(b.date).localeCompare(String(a.date)));$("#count").textContent=stories.length+" câu chuyện";$("#grid").innerHTML=arr.map((s,i)=>`<article class="card" data-id="${esc(s.id)}"><div class="cover"><span class="tag">${s.status==="completed"?"ĐÃ HOÀN":"ĐANG VIẾT"}</span>${s.cover?`<img src="${esc(s.cover)}" alt="">`:`<span class="symbol">${esc(s.symbol||"✦")}</span>`}</div><div class="cardbody"><div class="cardmeta"><span>${esc((s.genre||[]).join(" · "))}</span><span>${(s.chapters||[]).length} chương</span></div><h3>${esc(s.title)}</h3><p>${esc(s.description||s.subtitle||"")}</p><div class="cardfoot"><span>${esc(s.author||"Ẩn danh")}</span><span>Đọc truyện ↗</span></div></div></article>`).join("");$("#empty").classList.toggle("hidden",arr.length>0)}
 
+function showStoryDetails(id){
+  const story=stories.find(s=>s.id===id);if(!story)return;
+  $("#pickerTitle").textContent=story.title||"Chưa đặt tên";
+  $("#pickerDescription").textContent=story.description||story.subtitle||"";
+  $("#pickerMeta").textContent=`${story.author||"Ẩn danh"} · ${(story.genre||[]).join(" · ")} · ${(story.chapters||[]).length} chương`;
+  const chapters=story.chapters||[];
+  $("#chapterList").innerHTML=chapters.length?chapters.map((ch,i)=>`<button class="chapter-choice" data-chapter="${i}"><span class="chapter-choice-number">${String(i+1).padStart(2,"0")}</span><span class="chapter-choice-title">${esc(ch.title||"Chương "+(i+1))}</span><span class="chapter-choice-arrow">↗</span></button>`).join(""):'<p class="muted">Truyện chưa có chương nào.</p>';
+  $("#chapterList").querySelectorAll("[data-chapter]").forEach(btn=>btn.addEventListener("click",()=>{const idx=Number(btn.dataset.chapter);closePicker();openStory(id,idx)}));
+  $("#chapterPicker").classList.add("open");$("#chapterPicker").setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+}
+function closePicker(){const el=$("#chapterPicker");if(!el)return;el.classList.remove("open");el.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+$("#pickerClose").onclick=closePicker;$("#pickerBackdrop").onclick=closePicker;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#chapterPicker").classList.contains("open"))closePicker()});
 function renderChapterContent(chapter){
   const target=$("#prose");
   target.replaceChildren();
@@ -30,7 +43,7 @@ function updateContinuePanel(){const p=getProgress(),story=p&&stories.find(s=>s.
 function openStory(id,idx=0,restore=false){current=stories.find(s=>s.id===id);if(!current)return;chapterIndex=Math.max(0,Math.min(idx,current.chapters.length-1));let c=current.chapters[chapterIndex]||{title:"Chưa có chương",content:"Tác giả đang cập nhật."};$("#readAuthor").textContent=(current.author||"Mộng Thư Các").toUpperCase();$("#readMeta").textContent=(current.genre||[]).join(" · ")+" / "+(c.date||current.date||"");$("#readTitle").textContent=c.title;$("#readSub").textContent=current.title+" — "+(current.subtitle||"");renderChapterContent(c);$("#prose").style.fontSize=fontSize+"px";$("#prev").disabled=chapterIndex===0;$("#next").disabled=chapterIndex>=current.chapters.length-1;$("#reader").classList.add("open");document.body.style.overflow="hidden";if(restore){const p=getProgress();requestAnimationFrame(()=>{$("#reader").scrollTop=Math.max(0,Number(p?.scrollTop)||0);saveProgress()})}else{$("#reader").scrollTop=0;saveProgress()}loadComments()}
 function close(){saveProgress();$("#reader").classList.remove("open");document.body.style.overflow=""}
 async function loadComments(){try{let d=await api(null,"GET");let r=await fetch("/.netlify/functions/api?comments="+encodeURIComponent(current.id));let j=await r.json();$("#commentList").innerHTML=(j.comments||[]).map(c=>`<div class="comment"><strong>${esc(c.name)}</strong><small>${new Date(c.date).toLocaleString("vi-VN")}</small><p>${esc(c.content)}</p></div>`).join("")||'<p class="muted">Chưa có bình luận nào. Hãy là người đầu tiên nhé!</p>'}catch(e){$("#commentList").innerHTML='<p class="muted">Không tải được bình luận.</p>'}}
-$("#grid").addEventListener("click",e=>{let c=e.target.closest("[data-id]");if(c)openStory(c.dataset.id)});
+$("#grid").addEventListener("click",e=>{let c=e.target.closest("[data-id]");if(c)showStoryDetails(c.dataset.id)});
 $("#close").onclick=close;$("#prev").onclick=()=>current&&openStory(current.id,chapterIndex-1);$("#next").onclick=()=>current&&openStory(current.id,chapterIndex+1);
 $("#reader").addEventListener("scroll",()=>{if(!current||!$("#reader").classList.contains("open"))return;clearTimeout(window.__mtcProgressTimer);window.__mtcProgressTimer=setTimeout(saveProgress,350)});window.addEventListener("pagehide",saveProgress);
 $("#continueBtn").onclick=()=>{const p=getProgress();if(p&&stories.some(s=>s.id===p.storyId))openStory(p.storyId,Number(p.chapterIndex)||0,true)};

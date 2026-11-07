@@ -72,3 +72,4 @@ Trong trang quản trị, mỗi chương có thể gồm nhiều khối nội du
 
 
 - Phiên bản v5: các ảnh minh họa đặt liên tiếp trong chương sẽ sát liền nhau, không còn khoảng trống; ảnh không bị bo góc và không bị giới hạn chiều cao.
+\n- Phiên bản v6: nhấn vào thẻ truyện sẽ mở thông tin và danh sách chương; người đọc chọn chương muốn đọc trước khi vào trình đọc.\n

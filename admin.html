@@ -1,0 +1,14 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quản trị — Mộng Thư Các</title><link rel="stylesheet" href="style.css"></head><body><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">✦</span><span><strong>Mộng Thư Các</strong><small>TRANG QUẢN TRỊ</small></span></a><nav class="nav"><a href="index.html">Xem website ↗</a></nav></header>
+<main class="admin-shell"><div class="admin-head"><div><p class="eyebrow">STORY MANAGEMENT</p><h1>Quản trị thư viện</h1><p class="muted">Tạo, chỉnh sửa truyện, chương, ảnh bìa và kiểm duyệt bình luận.</p></div><button class="primary" id="newStory">＋ Truyện mới</button></div>
+<div class="notice">⚠️ Trang quản trị hiện không có mật khẩu theo lựa chọn của bạn. Bất kỳ ai biết địa chỉ <b>/admin.html</b> đều có thể sửa/xóa truyện và bình luận. Không nên chia sẻ đường dẫn này nếu muốn giữ quyền kiểm soát nội dung.</div>
+<section class="panel"><h2 id="formTitle">Thông tin truyện</h2><form id="storyForm"><input type="hidden" name="id"><div class="formgrid">
+<label class="formfield">Tên truyện<input name="title" required maxlength="120"></label><label class="formfield">Tác giả / bút danh<input name="author" maxlength="80"></label>
+<label class="formfield">Tên hiển thị phụ<input name="subtitle" maxlength="180"></label><label class="formfield">Thể loại<input name="genre" placeholder="Fantasy, Romance"></label>
+<label class="formfield">Trạng thái<select name="status"><option value="ongoing">Đang viết</option><option value="completed">Đã hoàn</option></select></label><label class="formfield">Ký tự trang trí bìa<input name="symbol" maxlength="4" value="✦"></label>
+<label class="formfield full">Tóm tắt<textarea name="description" maxlength="500"></textarea></label>
+<label class="formfield">Ảnh bìa (PNG/JPG/WEBP/GIF, tối đa 4MB)<input id="coverFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label><div class="formfield"><span>Xem trước ảnh bìa</span><img id="coverPreview" class="cover-preview" alt="Chưa có ảnh bìa"></div>
+</div><div class="actions"><button class="primary" type="submit">Lưu truyện</button><button class="secondary" type="button" id="resetForm">Xóa nội dung form</button></div></form></section>
+<section class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2>Chương truyện</h2><button class="secondary" id="addChapter">＋ Thêm chương</button></div><div id="chapters"></div></section>
+<section class="panel"><h2>Danh sách truyện</h2><div id="storyList"></div></section>
+<section class="panel"><h2>Quản lý bình luận</h2><p class="muted">Xóa bình luận không phù hợp. Bình luận được hiển thị công khai ngay sau khi gửi.</p><div id="commentAdmin"></div></section>
+</main><script src="admin.js"></script></body></html>

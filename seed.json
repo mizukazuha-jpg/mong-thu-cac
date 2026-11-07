@@ -1,0 +1,70 @@
+[
+  {
+    "id": "duoi-trang-nguyet",
+    "title": "Dưới Ánh Trăng",
+    "subtitle": "Có những lời hứa đi qua cả nghìn năm.",
+    "author": "Hoa Nguyệt Tiên",
+    "genre": [
+      "Fantasy",
+      "Romance"
+    ],
+    "status": "ongoing",
+    "date": "2026-11-01",
+    "symbol": "月",
+    "cover": "",
+    "description": "Một vị thần trăng, một thần mộc bị lưu đày và lời hẹn chưa từng phai.",
+    "chapters": [
+      {
+        "id": "c1",
+        "title": "Chương 1: Cánh cổng Eidrali",
+        "date": "2026-11-01",
+        "content": "Đêm ấy, ánh trăng phủ lên khu rừng một màu bạc dịu dàng.\n\nGió khẽ lay những tán lá. Ở nơi sâu nhất của khu rừng, một cánh cổng cổ xưa đang chậm rãi thức tỉnh.\n\nNgười ta kể rằng, phía bên kia cánh cổng là Tam Giới — nơi thần linh, con người và quỷ dữ cùng tồn tại.\n\nNàng đứng dưới vầng trăng, lặng lẽ nhìn về phía khu rừng. Có một cái tên nàng đã cố quên.\n\n“Tịch Hàn…”"
+      }
+    ]
+  },
+  {
+    "id": "echofall-after-the-ending",
+    "title": "ECHOFALL: After the Ending",
+    "subtitle": "Nếu thế giới lặp lại, liệu ký ức có còn ở lại?",
+    "author": "Mizu Kazuha",
+    "genre": [
+      "Fantasy",
+      "Drama"
+    ],
+    "status": "ongoing",
+    "date": "2026-10-20",
+    "symbol": "◇",
+    "cover": "",
+    "description": "Một thế giới sau vô số lần kết thúc, nơi những linh hồn vẫn cố tìm thấy nhau.",
+    "chapters": [
+      {
+        "id": "c1",
+        "title": "Chương 1: Tiếng vọng",
+        "date": "2026-10-20",
+        "content": "Thế giới đã kết thúc bao nhiêu lần rồi?\n\nSans không còn nhớ rõ. Có lẽ hàng trăm, có lẽ hàng nghìn. Những con số dần mất đi ý nghĩa khi mọi thứ cứ lặp lại.\n\nAnh đứng giữa khoảng không tĩnh lặng, nhìn những mảnh ký ức trôi qua như bụi sao.\n\nLần này, anh tự nhủ, mình sẽ không để mọi chuyện kết thúc như trước nữa."
+      }
+    ]
+  },
+  {
+    "id": "mot-ngay-nao-do",
+    "title": "Một Ngày Nào Đó",
+    "subtitle": "Những điều bình thường cũng có thể trở thành phép màu.",
+    "author": "Mizu Kazuha",
+    "genre": [
+      "Slice of Life"
+    ],
+    "status": "completed",
+    "date": "2026-09-15",
+    "symbol": "✿",
+    "cover": "",
+    "description": "Một tuyển tập những khoảnh khắc nhỏ, dịu dàng và rất đỗi đời thường.",
+    "chapters": [
+      {
+        "id": "c1",
+        "title": "Chương 1: Buổi chiều",
+        "date": "2026-09-15",
+        "content": "Buổi chiều trôi qua chậm rãi. Nắng nằm nghiêng trên bậu cửa, còn tách trà trên bàn đã nguội từ lúc nào.\n\nĐôi khi, hạnh phúc chẳng cần điều gì lớn lao. Chỉ cần một ngày bình yên, một người để nhớ đến, và một nơi để trở về."
+      }
+    ]
+  }
+]

@@ -5,10 +5,66 @@ function uid(){return "story-"+Math.random().toString(36).slice(2,10)}
 async function load(){try{stories=(await request(null,"GET")).stories||[];if(!stories.length){const seed=await fetch("seed.json");if(seed.ok)stories=await seed.json()}}catch(e){alert("Không kết nối được dữ liệu. Hãy deploy lên Netlify trước.")}renderList();renderComments()}
 function renderList(){$("#storyList").innerHTML=stories.map(s=>`<div class="story-row"><div><strong>${esc(s.title)}</strong><small>${esc(s.author)} · ${(s.chapters||[]).length} chương · ${s.status==="completed"?"Đã hoàn":"Đang viết"}</small></div><div class="actions"><button class="secondary" data-edit="${esc(s.id)}">Sửa</button><button class="danger" data-delete="${esc(s.id)}">Xóa</button></div></div>`).join("")||'<p class="muted">Chưa có truyện.</p>'}
 function reset(){editing=null;coverUrl="";chapters=[];$("#storyForm").reset();$("#storyForm [name=id]").value="";$("#coverPreview").removeAttribute("src");$("#coverPreview").textContent="✦";$("#formTitle").textContent="Tạo truyện mới";renderChapters()}
-function renderChapters(){$("#chapters").innerHTML=chapters.map((c,i)=>`<div class="chapter-editor" data-chapter="${i}"><header><span>Chương ${i+1}</span><button class="danger" type="button" data-remove-chapter="${i}">Xóa chương</button></header><div class="formgrid"><label class="formfield">Tên chương<input data-cfield="title" value="${esc(c.title)}" required></label><label class="formfield">Ngày cập nhật<input data-cfield="date" type="date" value="${esc(c.date||"")}"></label><label class="formfield full">Nội dung<textarea data-cfield="content" rows="8">${esc(c.content)}</textarea></label></div></div>`).join("")||'<p class="muted">Chưa có chương. Bấm “Thêm chương” để bắt đầu.</p>'}
-function collectChapters(){document.querySelectorAll(".chapter-editor").forEach((el,i)=>{chapters[i].title=el.querySelector('[data-cfield="title"]').value;chapters[i].date=el.querySelector('[data-cfield="date"]').value;chapters[i].content=el.querySelector('[data-cfield="content"]').value})}
-$("#addChapter").onclick=()=>{collectChapters();chapters.push({id:uid(),title:`Chương ${chapters.length+1}`,date:new Date().toISOString().slice(0,10),content:""});renderChapters()};
-$("#chapters").addEventListener("click",e=>{let b=e.target.closest("[data-remove-chapter]");if(b){collectChapters();chapters.splice(Number(b.dataset.removeChapter),1);renderChapters()}});
+
+function normalizedBlocks(c){
+  if(Array.isArray(c.blocks) && c.blocks.length) return JSON.parse(JSON.stringify(c.blocks));
+  return [{id:uid(),type:"text",content:c.content||""}];
+}
+function renderChapters(){
+  $("#chapters").innerHTML=chapters.map((c,i)=>{
+    c.blocks=normalizedBlocks(c);
+    const blocks=c.blocks.map((b,j)=>b.type==="image"
+      ? `<div class="content-block image-block" data-block="${j}"><div class="block-head"><strong>Ảnh minh họa ${j+1}</strong><button class="danger" type="button" data-remove-block="${j}">Xóa khối</button></div><label class="formfield">Tải ảnh (PNG/JPG/WEBP/GIF, tối đa 4MB)<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-image-upload="${j}"></label>${b.url?`<img class="chapter-image-preview" src="${esc(b.url)}" alt="Ảnh minh họa">`:'<p class="muted">Chưa có ảnh. Chọn tệp để tải lên.</p>'}<label class="formfield">Chú thích ảnh<input data-block-caption="${j}" value="${esc(b.caption||"")}" placeholder="Không bắt buộc"></label></div>`
+      : `<div class="content-block text-block" data-block="${j}"><div class="block-head"><strong>Đoạn văn ${j+1}</strong><button class="danger" type="button" data-remove-block="${j}">Xóa khối</button></div><label class="formfield">Nội dung<textarea data-block-text="${j}" rows="5" placeholder="Viết nội dung đoạn truyện...">${esc(b.content||"")}</textarea></label></div>`
+    ).join("");
+    return `<div class="chapter-editor" data-chapter="${i}"><header><span>Chương ${i+1}</span><button class="danger" type="button" data-remove-chapter="${i}">Xóa chương</button></header><div class="formgrid"><label class="formfield">Tên chương<input data-cfield="title" value="${esc(c.title)}" required></label><label class="formfield">Ngày cập nhật<input data-cfield="date" type="date" value="${esc(c.date||"")}"></label></div><div class="content-blocks">${blocks}</div><div class="block-actions"><button class="secondary" type="button" data-add-text>＋ Thêm đoạn chữ</button><button class="secondary" type="button" data-add-image>＋ Chèn ảnh</button></div></div>`;
+  }).join("")||'<p class="muted">Chưa có chương. Bấm “Thêm chương” để bắt đầu.</p>';
+}
+function collectChapters(){
+  document.querySelectorAll(".chapter-editor").forEach((el,i)=>{
+    const c=chapters[i];
+    c.title=el.querySelector('[data-cfield="title"]').value;
+    c.date=el.querySelector('[data-cfield="date"]').value;
+    el.querySelectorAll(".content-block").forEach(blockEl=>{
+      const j=Number(blockEl.dataset.block), b=c.blocks[j];
+      if(!b)return;
+      if(b.type==="image") b.caption=blockEl.querySelector(`[data-block-caption="${j}"]`)?.value||"";
+      else b.content=blockEl.querySelector(`[data-block-text="${j}"]`)?.value||"";
+    });
+    c.content=c.blocks.filter(b=>b.type==="text").map(b=>b.content||"").join("\n\n");
+  });
+}
+$("#addChapter").onclick=()=>{collectChapters();chapters.push({id:uid(),title:`Chương ${chapters.length+1}`,date:new Date().toISOString().slice(0,10),content:"",blocks:[{id:uid(),type:"text",content:""}]});renderChapters()};
+$("#chapters").addEventListener("click",e=>{
+  const chapterEl=e.target.closest(".chapter-editor");
+  if(!chapterEl)return;
+  const ci=Number(chapterEl.dataset.chapter);
+  if(e.target.closest("[data-remove-chapter]")){collectChapters();chapters.splice(ci,1);renderChapters();return}
+  if(e.target.closest("[data-add-text]")||e.target.closest("[data-add-image]")){
+    collectChapters();
+    const isImage=!!e.target.closest("[data-add-image]");
+    chapters[ci].blocks.push(isImage?{id:uid(),type:"image",url:"",caption:""}:{id:uid(),type:"text",content:""});
+    renderChapters();return;
+  }
+  const remove=e.target.closest("[data-remove-block]");
+  if(remove){collectChapters();chapters[ci].blocks.splice(Number(remove.dataset.removeBlock),1);renderChapters()}
+});
+$("#chapters").addEventListener("change",async e=>{
+  const input=e.target.closest("[data-image-upload]");
+  if(!input||!input.files?.[0])return;
+  const file=input.files[0], ci=Number(input.closest(".chapter-editor").dataset.chapter), bi=Number(input.dataset.imageUpload);
+  if(file.size>4*1024*1024){alert("Ảnh tối đa 4MB");input.value="";return}
+  const reader=new FileReader();
+  reader.onload=async()=>{
+    try{
+      const result=await request({action:"uploadImage",dataUrl:reader.result});
+      collectChapters();
+      chapters[ci].blocks[bi].url=result.url;
+      renderChapters();
+    }catch(err){alert("Không tải được ảnh: "+err.message)}
+  };
+  reader.readAsDataURL(file);
+});
 $("#newStory").onclick=reset;$("#resetForm").onclick=reset;
 $("#storyList").addEventListener("click",async e=>{let ed=e.target.closest("[data-edit]"),del=e.target.closest("[data-delete]");if(ed){let s=stories.find(x=>x.id===ed.dataset.edit);editing=s.id;coverUrl=s.cover||"";chapters=JSON.parse(JSON.stringify(s.chapters||[]));let f=$("#storyForm");for(let k of ["id","title","author","subtitle","status","symbol","description"])f.elements[k].value=s[k]||"";f.elements.genre.value=(s.genre||[]).join(", ");$("#coverPreview").src=coverUrl||"";$("#formTitle").textContent="Chỉnh sửa: "+s.title;renderChapters();window.scrollTo({top:0,behavior:"smooth"})}
 if(del){if(!confirm("Xóa truyện này và toàn bộ chương?"))return;stories=stories.filter(s=>s.id!==del.dataset.delete);await saveAll() }});

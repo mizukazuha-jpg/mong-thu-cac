@@ -59,3 +59,7 @@ Không dùng bản không mật khẩu cho nội dung cần bảo vệ. Nếu sa
 - Không cần tạo biến môi trường cho Blobs khi chạy trong Netlify Functions.
 - Dữ liệu khởi tạo mẫu ở `seed.json` đồng thời có fallback trong `app.js`. Có thể xóa truyện mẫu trong trang quản trị.
 - Đây là nền tảng gọn cho website cá nhân, không phải CMS quy mô lớn; bình luận chưa có chống spam/rate-limit và lưu danh sách theo từng truyện trong một blob.
+
+
+## Nội dung chương kết hợp chữ và ảnh
+Trong trang quản trị, mỗi chương có thể gồm nhiều khối nội dung. Dùng **＋ Thêm đoạn chữ** và **＋ Chèn ảnh** để sắp xếp văn bản và ảnh xen kẽ theo thứ tự. Ảnh PNG/JPG/WEBP/GIF tối đa 4MB mỗi ảnh; có thể thêm chú thích. Các chương cũ chỉ có `content` vẫn được hiển thị bình thường.
